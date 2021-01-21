@@ -2,6 +2,8 @@ import axios, { AxiosResponse } from 'axios';
 import { Airport } from '../model/airport.model';
 import { Collection } from '../model/collection.model';
 
+type ApiResponse<T> = Promise<AxiosResponse<T>>;
+
 const api = axios.create({
     baseURL: process.env.REACT_APP_BASE_PATH,
     headers: {
@@ -9,4 +11,5 @@ const api = axios.create({
     }
 })
 
-export const getAirports = (): Promise<AxiosResponse<Collection<Airport>>> => api.get('/airports/all');
+export const getAirports = (): ApiResponse<Collection<Airport>> => api.get('/airports/all');
+// export const getFlight = (from, to) =>
