@@ -1,20 +1,26 @@
-import React from 'react';
-import { Counter } from './features/counter/Counter';
+import { Box, Container, Paper } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { TextField } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
-
+import React from 'react';
 import './App.css';
+import Header from './components/Header';
 
 function App() {
-
     return (
         <>
             <CssBaseline />
-
+            <Header />
+            <Container>
+                <Box my={10}>
+                    {[...new Array(12)]
+                        .map(
+                            () => <Paper > Hello world</Paper>,
+                        )}
+                </Box>
+            </Container>
         </>
     );
 }
+
 
 
 export default App;
