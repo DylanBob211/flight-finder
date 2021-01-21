@@ -3,19 +3,19 @@ import { Autocomplete } from '@material-ui/lab';
 import { createSelector } from '@reduxjs/toolkit';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAirports, selectArrival, selectDeparture, setArrival, setDeparture } from '../app/appSlice';
+import { searchBestFlight, selectAirports, selectArrival, selectDeparture, setArrival, setDeparture } from '../app/appSlice';
 
 const useStyles = makeStyles(theme => ({
     title: {
         margin: `${theme.spacing(1)}px 0`
     },
     toolbar: {
-        display: 'flex', 
-        justifyContent: 'space-between' 
+        display: 'flex',
+        justifyContent: 'space-between'
     },
     comboContainer: {
-        flex: '1 1 100%', 
-        display: 'flex', 
+        flex: '1 1 100%',
+        display: 'flex',
         flexWrap: 'wrap'
     },
     comboItem: {
@@ -84,7 +84,18 @@ const Header = () => {
                             onChange={(_, value) => dispatch(setArrival(!!value ? value.codeIata : null))}
                         />
                     </Box>
-                    <Button variant="contained" color="primary" disabled={!selectedArrival || !selectedDeparture}><span className="material-icons">search</span></Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        disabled={!selectedArrival || !selectedDeparture}
+                        onClick={() => {
+                            if (!!selectedDeparture && !!selectedArrival) {
+                                dispatch(searchBestFlight(selectedDeparture, selectedArrival))
+                            }
+                        }}
+                    >
+                        <span className="material-icons">search</span>
+                    </Button>
                 </Toolbar>
             </AppBar>
         </ElevationScroll>
