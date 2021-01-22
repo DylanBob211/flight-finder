@@ -47,15 +47,15 @@ export const appSlice = createSlice({
 
 export const { setDeparture, setArrival } = appSlice.actions;
 
-export const getAirports = (): AppThunk => (dispatch) => {
-    api.getAirports().then((res) => dispatch(appSlice.actions.getAirports(res.data.data)));
-};
-export const getAirlines = (): AppThunk => dispatch => {
-    api.getAirlines().then(res => dispatch(appSlice.actions.getAirlines(res.data.data)))
-}
 export const searchBestFlight = (from: string, to: string): AppThunk => (dispatch) => {
     api.getFlight(from, to).then((res) => dispatch(appSlice.actions.getBestFlight(res.data.data)));
 };
+export const getInitialData = (): AppThunk => dispatch => {
+    Promise.all([api.getAirlines(), api.getAirports()]).then(([airlines, airports]) => {
+        dispatch(appSlice.actions.getAirlines(airlines.data.data))
+        dispatch(appSlice.actions.getAirports(airports.data.data))
+    });
+}
 
 // SELECTORS
 
