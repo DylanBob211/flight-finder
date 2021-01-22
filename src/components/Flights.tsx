@@ -5,8 +5,8 @@ import { selectFlights, selectAirlines, selectAirports } from '../app/appSlice';
 
 const Flights = () => {
     const flights = useSelector(selectFlights);
-    const airlinesInfo = useSelector(selectAirlines);
-    const airportsInfo = useSelector(selectAirports);
+    const airlines = useSelector(selectAirlines);
+    const airports = useSelector(selectAirports);
     return (
         <>
             {flights
@@ -14,9 +14,9 @@ const Flights = () => {
                     flight => (
                         <FlightItem
                             key={flight.id}
-                            airline={airlinesInfo.find(airline => airline.id === flight.airlineId)?.name || 'Could not find airline name'}
-                            departureAirport={airportsInfo.find(airport => airport.id === flight.departureAirportId)?.codeIata || 'Could not find departure information'}
-                            arrivalAirport={airportsInfo.find(airport => airport.id === flight.arrivalAirportId)?.codeIata || 'Could not find departure information'}
+                            airline={airlines.find(airline => airline.id === flight.airlineId)?.name || 'Could not find airline name'}
+                            departureAirport={airports.find(airport => airport.id === flight.departureAirportId)?.codeIata || 'Could not find departure information'}
+                            arrivalAirport={airports.find(airport => airport.id === flight.arrivalAirportId)?.codeIata || 'Could not find departure information'}
                             price={flight.price}
                         />),
                 )}
