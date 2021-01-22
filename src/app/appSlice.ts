@@ -43,6 +43,8 @@ export const appSlice = createSlice({
     }
 });
 
+// ACTIONS
+
 export const { setDeparture, setArrival } = appSlice.actions;
 
 export const getAirports = (): AppThunk => (dispatch) => {
@@ -55,8 +57,12 @@ export const searchBestFlight = (from: string, to: string): AppThunk => (dispatc
     api.getFlight(from, to).then((res) => dispatch(appSlice.actions.getBestFlight(res.data.data)));
 };
 
+// SELECTORS
+
 export const selectAirports = (state: RootState) => state.app.airports;
 export const selectDeparture = (state: RootState) => state.app.departure;
 export const selectArrival = (state: RootState) => state.app.arrival;
+export const selectFlights = (state: RootState) => state.app.flights;
+export const selectAirlines = (state: RootState) => state.app.airlines;
 
 export default appSlice.reducer;
