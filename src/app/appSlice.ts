@@ -40,12 +40,16 @@ export const appSlice = createSlice({
         },
         getBestFlight: (state, action: PayloadAction<Flight[]>) => {
             state.flights = action.payload;
+            state.bodyLoading = false;
         },
         getAirlines: (state, action: PayloadAction<Airline[]>) => {
             state.airlines = action.payload;
         },
         stopInitialLoading: (state) => {
             state.initialLoading = false;
+        },
+        startBodyLoading: (state) => {
+            state.bodyLoading = true;
         }
     }
 });
@@ -55,6 +59,7 @@ export const appSlice = createSlice({
 export const { setDeparture, setArrival } = appSlice.actions;
 
 export const searchBestFlight = (from: string, to: string): AppThunk => (dispatch) => {
+    dispatch(appSlice.actions.startBodyLoading());
     api.getFlight(from, to).then((res) => dispatch(appSlice.actions.getBestFlight(res.data.data)));
 };
 export const getInitialData = (): AppThunk => dispatch => {
@@ -73,4 +78,5 @@ export const selectArrival = (state: RootState) => state.app.arrival;
 export const selectFlights = (state: RootState) => state.app.flights;
 export const selectAirlines = (state: RootState) => state.app.airlines;
 export const selectInitialLoading = (state: RootState) => state.app.initialLoading;
+export const selectBodyLoading = (state: RootState) => state.app.bodyLoading;
 export default appSlice.reducer;
