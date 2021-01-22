@@ -11,6 +11,8 @@ interface AppState {
     airports: Airport[];
     departure: string | null;
     arrival: string | null;
+    initialLoading: boolean;
+    bodyLoading: boolean;
 }
 
 const initialState: AppState = {
@@ -18,7 +20,9 @@ const initialState: AppState = {
     airlines: [] as Airline[],
     airports: [] as Airport[],
     departure: null,
-    arrival: null
+    arrival: null,
+    initialLoading: true,
+    bodyLoading: false
 };
 
 export const appSlice = createSlice({
@@ -39,6 +43,9 @@ export const appSlice = createSlice({
         },
         getAirlines: (state, action: PayloadAction<Airline[]>) => {
             state.airlines = action.payload;
+        },
+        stopInitialLoading: (state) => {
+            state.initialLoading = false;
         }
     }
 });
@@ -54,6 +61,7 @@ export const getInitialData = (): AppThunk => dispatch => {
     Promise.all([api.getAirlines(), api.getAirports()]).then(([airlines, airports]) => {
         dispatch(appSlice.actions.getAirlines(airlines.data.data))
         dispatch(appSlice.actions.getAirports(airports.data.data))
+        dispatch(appSlice.actions.stopInitialLoading());
     });
 }
 
@@ -64,5 +72,5 @@ export const selectDeparture = (state: RootState) => state.app.departure;
 export const selectArrival = (state: RootState) => state.app.arrival;
 export const selectFlights = (state: RootState) => state.app.flights;
 export const selectAirlines = (state: RootState) => state.app.airlines;
-
+export const selectInitialLoading = (state: RootState) => state.app.initialLoading;
 export default appSlice.reducer;

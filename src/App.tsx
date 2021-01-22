@@ -1,17 +1,21 @@
-import { Box, Container } from '@material-ui/core';
+import { Box, Container, LinearProgress } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getInitialData } from './app/appSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getInitialData, selectInitialLoading } from './app/appSlice';
 import Flights from './components/Flights';
 import Header from './components/Header';
 
 
 function App() {
     const dispatch = useDispatch();
+    const initialLoading = useSelector(selectInitialLoading);
     useEffect(() => {
         dispatch(getInitialData());
     }, [dispatch])
+    
+    if (initialLoading) return <LinearProgress />
+    
     return (
         <>
             <CssBaseline />
