@@ -1,4 +1,4 @@
-import { CircularProgress, LinearProgress } from '@material-ui/core';
+import { LinearProgress } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
