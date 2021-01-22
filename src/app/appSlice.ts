@@ -13,6 +13,7 @@ interface AppState {
     arrival: string | null;
     initialLoading: boolean;
     bodyLoading: boolean;
+    hasError: boolean;
 }
 
 const initialState: AppState = {
@@ -22,7 +23,8 @@ const initialState: AppState = {
     departure: null,
     arrival: null,
     initialLoading: true,
-    bodyLoading: false
+    bodyLoading: false,
+    hasError: false
 };
 
 export const appSlice = createSlice({
@@ -50,24 +52,33 @@ export const appSlice = createSlice({
         },
         startBodyLoading: (state) => {
             state.bodyLoading = true;
+        },
+        showError: (state) => {
+            state.hasError = true;
+        },
+        resetError: (state) => {
+            state.hasError = false;
         }
     }
 });
 
 // ACTIONS
-
-export const { setDeparture, setArrival } = appSlice.actions;
+export const { setDeparture, setArrival, showError, resetError } = appSlice.actions;
 
 export const searchBestFlight = (from: string, to: string): AppThunk => (dispatch) => {
     dispatch(appSlice.actions.startBodyLoading());
-    api.getFlight(from, to).then((res) => dispatch(appSlice.actions.getBestFlight(res.data.data)));
+    api.getFlight(from, to)
+        .then((res) => dispatch(appSlice.actions.getBestFlight(res.data.data)))
+        .catch(() => dispatch(appSlice.actions.showError()));
 };
 export const getInitialData = (): AppThunk => dispatch => {
-    Promise.all([api.getAirlines(), api.getAirports()]).then(([airlines, airports]) => {
-        dispatch(appSlice.actions.getAirlines(airlines.data.data))
-        dispatch(appSlice.actions.getAirports(airports.data.data))
-        dispatch(appSlice.actions.stopInitialLoading());
-    });
+    Promise.all([api.getAirlines(), api.getAirports()])
+        .then(([airlines, airports]) => {
+            dispatch(appSlice.actions.getAirlines(airlines.data.data))
+            dispatch(appSlice.actions.getAirports(airports.data.data))
+        })
+        .catch(() => dispatch(appSlice.actions.showError()))
+        .finally(() => dispatch(appSlice.actions.stopInitialLoading()));
 }
 
 // SELECTORS
@@ -79,4 +90,6 @@ export const selectFlights = (state: RootState) => state.app.flights;
 export const selectAirlines = (state: RootState) => state.app.airlines;
 export const selectInitialLoading = (state: RootState) => state.app.initialLoading;
 export const selectBodyLoading = (state: RootState) => state.app.bodyLoading;
+export const selectErrorState = (state: RootState) => state.app.hasError;
+
 export default appSlice.reducer;

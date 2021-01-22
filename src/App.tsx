@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInitialData, selectInitialLoading } from './app/appSlice';
 import Body from './components/Body';
+import ErrorDialog from './components/ErrorDialog';
 import Flights from './components/Flights';
 import Header from './components/Header';
 
@@ -24,6 +25,7 @@ function App() {
             <Body>
                 <Flights />
             </Body>
+            <ErrorDialog />
         </>
     );
 }
