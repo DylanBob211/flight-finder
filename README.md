@@ -1,6 +1,6 @@
 To run the app follow these steps:
 1. clone this repository
-    `git clone https://github.com/DylanBob211/shippy-pro-flight-finder.git`
+    `git clone https://github.com/DylanBob211/flight-finder.git`
 2. install the dependencies
     `npm install`
 3. make a `.env` file in the root directory and paste your API key after the 'REACT_APP_API_KEY='. You can find a .envSample file where this step is shown.
